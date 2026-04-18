@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Мои фавориты | Русские чаи — коллекция с фото</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f3ede5;
+            font-family: 'Segoe UI', 'Roboto', 'Georgia', serif;
+            color: #2c2418;
+            line-height: 1.5;
+            padding: 1.5rem 1rem;
+        }
+
+        .master-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+        }
+
+        .main-content {
+            background: #fffef7;
+            border-radius: 2rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            padding: 1.8rem 2rem 2.5rem 2rem;
+        }
+
+        .sidebar {
+            background: #fffaf4;
+            border-radius: 1.8rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+            border: 1px solid #efe2d4;
+            height: fit-content;
+            position: sticky;
+            top: 1.5rem;
+        }
+
+        .sidebar h3 {
+            font-size: 1.4rem;
+            border-left: 5px solid #bc6f4b;
+            padding-left: 1rem;
+            margin-bottom: 1.2rem;
+            color: #4f2d1c;
+        }
+
+        .fact-list {
+            list-style: none;
+        }
+
+        .fact-list li {
+            margin-bottom: 1rem;
+            padding: 0.6rem 0;
+            border-bottom: 1px dashed #ecdccf;
+            font-size: 0.9rem;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0e2d4;
+        }
+
+        .nav-links a {
+            background: #f4ede6;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            text-decoration: none;
+            color: #7a5a44;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .nav-links a:hover {
+            background: #dcc2aa;
+            color: white;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, #5e3a2b, #b1624b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .section {
+            margin: 3rem 0 2rem 0;
+            scroll-margin-top: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            background: #faf0e8;
+            padding: 0.2rem 1.5rem;
+            border-radius: 60px;
+            color: #734c34;
+        }
+
+        .tea-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.8rem;
+            margin: 1rem 0;
+        }
+
+        .tea-card {
+            background: white;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s;
+            border: 1px solid #f0e4d8;
+        }
+
+        .tea-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .badge-rus {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #b43f2bdd;
+            backdrop-filter: blur(3px);
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .card-content {
+            padding: 1.2rem;
+        }
+
+        .tea-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #4a2e22;
+        }
+
+        .tea-desc {
+            font-size: 0.85rem;
+            color: #6b4f38;
+            margin: 0.5rem 0;
+        }
+
+        .favorite-icon {
+            margin-top: 0.6rem;
+            color: #bc6f4b;
+            font-weight: 500;
+            font-size: 0.8rem;
+        }
+
+        .rating-bar {
+            background: #f3ede7;
+            border-radius: 20px;
+            height: 1.8rem;
+            margin: 0.5rem 0;
+            overflow: hidden;
+        }
+
+        .rating-fill {
+            background: #bc6f4b;
+            width: 0%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 1.2rem;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .compare-table th, .compare-table td {
+            padding: 0.9rem 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #f0e2d4;
+        }
+
+        .compare-table th {
+            background: #faf1e8;
+            color: #5e3a2b;
+        }
+
+        .notes-form {
+            background: #fef9f2;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        select, textarea, button {
+            width: 100%;
+            padding: 0.7rem;
+            margin: 0.5rem 0;
+            border-radius: 1rem;
+            border: 1px solid #e2cfbc;
+            font-family: inherit;
+        }
+
+        button {
+            background: #bc6f4b;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            border: none;
+        }
+
+        button:hover {
+            background: #9c5638;
+        }
+
+        .note-item {
+            background: #fff4e8;
+            margin-top: 0.8rem;
+            padding: 0.8rem;
+            border-radius: 1rem;
+            border-left: 4px solid #bc6f4b;
+        }
+
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #b49b84;
+            padding-top: 1rem;
+        }
+
+        @media (max-width: 880px) {
+            .master-grid {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="master-grid">
+    <div class="main-content">
+        <div class="nav-links">
+            <a href="#favorites">🍃 Мои чаи</a>
+            <a href="#rating">⭐ Мой рейтинг</a>
+            <a href="#comparison">📊 Таблица сравнения</a>
+            <a href="#brewing">🍵 Как заваривать</a>
+            <a href="#notes">📝 Мои заметки</a>
+            <a href="#history">📖 История глотка</a>
+        </div>
+
+        <div class="hero">
+            <h1>🍂 Мои фавориты · Русские чаи</h1>
+            <p style="color: #8b694c; margin-top: 0.5rem;">Копорский, Красный корень, можжевеловый, липовый — настоящие коллекционные чаи</p>
+        </div>
+
+        <!-- РАЗДЕЛ: МОИ ЛЮБИМЫЕ ЧАИ с реальными изображениями -->
+        <div id="favorites" class="section">
+            <div class="section-title">🍃 Мои любимые сорта</div>
+            <div class="tea-grid">
+                <!-- 1. АлтайФлора Красный корень -->
+                <div class="tea-card">
+                    <div class="card-img" style="background-image: url('https://sochi.altaimag.ru/upload/resize_cache/iblock/407/600_600_140cd750bba9870f18aada2478b24840a/4075df5d8109b9f035136984d61ca074.jpg'); width: 250px; height: 200px; background-size: cover; background-position: center;"></div>
+                    <div class="card-content">
+                        <div class="tea-name">АлтайФлора® Красный корень</div>
+                        <div class="tea-desc">Чайный напиток из красного корня (копеечника). 20 фильтр-пакетов по 1,5 г. Бодрит и укрепляет иммунитет.</div>
+                        <div class="favorite-icon">❤️ Алтайская сила</div>
+                    </div>
+                </div>
+                <!-- 2. Копорский чай -->
+                <div class="tea-card">
+                    <div class="card-img" style="background-image: url('https://newyog.ru/upload/iblock/9e1/9e1837349fcfa531fe40e88bef95cedc.jpg'); width: 150px; height: 200px; background-size: cover; background-position: center;"></div>
+                    <div class="card-content">
+                        <div class="tea-name">Копорский чай</div>
+                        <div class="tea-desc">Ферментированный иван-чай. Богатый состав природных биоактивных веществ. Традиционный русский напиток.</div>
+                        <div class="favorite-icon">❤️ Мой абсолютный фаворит</div>
+                    </div>
+                </div>
+                <!-- 3. Русский чай с ароматом традиционных ценностей -->
+                <div class="tea-card">
+                    <div class="card-img" style="background-image: url('https://magazintrav.ru/upload/iblock/d41/6zr43bi0pemva5yqyezm003ymvb5yx5x.jpg'); width: 160px; height: 200px; background-size: cover; background-position: center;"></div>
+                    <div class="card-content">
+                        <div class="tea-name">Русский чай с ароматом традиционных ценностей</div>
+                        <div class="tea-desc">Высшее качество, 100 г. Тёплый душевный купаж с нотками трав и ягод.</div>
+                        <div class="favorite-icon">❤️ Классика чаепития</div>
+                    </div>
+                </div>
+                <!-- 4. Гам с можжевельником / Натуральный сбор -->
+                <div class="tea-card">
+                    <div class="card-img" style="background-image: url('https://basket-29.wbbasket.ru/vol5700/part570041/570041507/images/c516x688/1.webp'); width: 260px; height: 200px; background-size: cover; background-position: center;"></div>
+                    <div class="card-content">
+                        <div class="tea-name">ГАМ с можжевельником · Натуральный сбор</div>
+                        <div class="tea-desc">100% натурально: мелисса, ромашка, кора дуба, липа. Масса нетто 80 г. Согревающий лесной аромат.</div>
+                        <div class="favorite-icon">❤️ Лесная аптека</div>
+                    </div>
+                </div>
+                <!-- 5. Липовый чай с яблоком (Семейно на Кубани) -->
+                <div class="tea-card">
+                    <div class="card-img" style="background-image: url('https://vitagrin.ru/files/gallery/101/big/_gen2344_1688966391.jpg'); width: 280px; height: 200px; background-size: cover; background-position: center;"></div>
+                    <div class="card-content">
+                        <div class="tea-name">Липовый чай с яблоком</div>
+                        <div class="tea-desc">Семейный рецепт с 1999 года. Нежный липовый цвет и кусочки яблока. Идеален для вечернего уюта.</div>
+                        <div class="favorite-icon">❤️ Согревающий вкус</div>
+                    </div>
+                </div>
+                <!-- 6. Рябиновые гроздья -->
+                <div class="tea-card">
+                    <div class="card-img" style="background-image: url('https://avatars.mds.yandex.net/i?id=165311e79dbf603ab505ab7ae4b382a1490a015c-4827941-images-thumbs&n=13'); width: 170px; height: 200px; background-size: cover; background-position: center;"></div>
+                    <div class="card-content">
+                        <div class="tea-name">Рябиновые гроздья</div>
+                        <div class="tea-desc">Напиток из спелой рябины с лёгкой терпкостью и фруктовыми нотами. Богат витаминами.</div>
+                        <div class="favorite-icon">❤️ Осенний букет</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- РАЗДЕЛ: РЕЙТИНГ -->
+        <div id="rating" class="section">
+            <div class="section-title">⭐ Мой личный рейтинг</div>
+            <div style="background: white; padding: 1.5rem; border-radius: 1.5rem;">
+                <div><strong>1. Копорский чай</strong> <span style="float:right;">10/10</span><div class="rating-bar"><div class="rating-fill" style="width:100%;">★ Русская легенда</div></div></div>
+                <div style="margin-top:1rem;"><strong>2. АлтайФлора Красный корень</strong> <span style="float:right;">9.5/10</span><div class="rating-bar"><div class="rating-fill" style="width:95%;">9.5</div></div></div>
+                <div><strong>3. Липовый чай с яблоком</strong> <span style="float:right;">9/10</span><div class="rating-bar"><div class="rating-fill" style="width:90%;">9</div></div></div>
+                <p style="margin-top:1rem; font-size:0.85rem; color:#936e51;">🏆 Копорский иван-чай — король русского чаепития за уникальный вкус и традицию.</p>
+            </div>
+        </div>
+
+        <!-- ТАБЛИЦА СРАВНЕНИЯ (обновлённая) -->
+        <div id="comparison" class="section">
+            <div class="section-title">📊 Таблица характеристик</div>
+            <table class="compare-table">
+                <thead><tr><th>Сорт чая</th><th>Тип</th><th>Основные компоненты</th><th>Эффект</th></tr></thead>
+                <tbody>
+                    <tr><td>Копорский чай</td><td>Ферментированный кипрей</td><td>Иван-чай узколистный</td><td>Противовоспалительный, успокаивает</td></tr>
+                    <tr><td>АлтайФлора Красный корень</td><td>Корневой травяной</td><td>Копеечник чайный</td><td>Тонизирует, укрепляет иммунитет</td></tr>
+                    <tr><td>Русский чай (традиц. ценности)</td><td>Черный чайный купаж</td><td>Чайный лист + травы</td><td>Бодрит, душевное тепло</td></tr>
+                    <tr><td>ГАМ с можжевельником</td><td>Травяной сбор</td><td>Мелисса, ромашка, кора дуба, липа</td><td>Успокаивает, помогает при стрессе</td></tr>
+                    <tr><td>Липовый чай с яблоком</td><td>Фруктово-цветочный</td><td>Липа, яблоко, натуральные ароматы</td><td>Согревает, от простуды</td></tr>
+                    <tr><td>Рябиновые гроздья</td><td>Ягодный настой</td><td>Рябина красная/черноплодная</td><td>Витаминный, лёгкая терпкость</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- КАК ЗАВАРИВАТЬ -->
+        <div id="brewing" class="section">
+            <div class="section-title">🍵 Как заваривать русские чаи</div>
+            <div style="background:#fff2e8; border-radius:1.2rem; padding:1.4rem;">
+                <ol style="margin-left:1.3rem;">
+                    <li><strong>Самовар или фарфоровый чайник</strong> — ошпарить кипятком.</li>
+                    <li><strong>Пропорция:</strong> 1-2 ч.л. сбора на чашку (250 мл). Для пакетиков — 1 пакетик на чашку.</li>
+                    <li><strong>Температура:</strong> 85–95°C (для иван-чая и красного корня — 90°C).</li>
+                    <li><strong>Настаивание:</strong> 5–7 минут под полотенцем.</li>
+                    <li><strong>Подача:</strong> с мёдом, вареньем, сушками. По традиции — пить из блюдца!</li>
+                </ol>
+                <p style="margin-top:1rem;">✨ Совет: Копорский чай можно заваривать до 3 раз, а липовый с яблоком особенно хорош в термосе.</p>
+            </div>
+        </div>
+
+        <!-- ЗАМЕТКИ (выбор чаёв обновлён) -->
+        <div id="notes" class="section">
+            <div class="section-title">📝 Мои заметки о чаях</div>
+            <div class="notes-form">
+                <select id="teaSelect">
+                    <option value="Копорский чай">Копорский чай</option>
+                    <option value="АлтайФлора Красный корень">АлтайФлора Красный корень</option>
+                    <option value="Русский чай (традиц. ценности)">Русский чай (традиц. ценности)</option>
+                    <option value="ГАМ с можжевельником">ГАМ с можжевельником</option>
+                    <option value="Липовый чай с яблоком">Липовый чай с яблоком</option>
+                    <option value="Рябиновые гроздья">Рябиновые гроздья</option>
+                </select>
+                <textarea id="noteText" rows="2" placeholder="Мои впечатления, рейтинг или личный рецепт..."></textarea>
+                <button id="saveNoteBtn">Сохранить заметку</button>
+                <div id="notesList"></div>
+            </div>
+        </div>
+
+        <!-- ИСТОРИЯ -->
+        <div id="history" class="section">
+            <div class="section-title">📖 История одного глотка</div>
+            <div style="background: #fff5ec; border-radius:1.2rem; padding:1.4rem;">
+                <p>⚜️ <strong>Как иван-чай стал русским национальным напитком</strong> — ещё в XII веке в селе Копорье (под Петербургом) монахи открыли способ ферментации кипрея. Напиток полюбился всей России, его экспортировали в Англию, где называли «русским чаем». Красный корень из Алтая ценился сибирскими знахарями, а можжевеловые сборы пили охотники для бодрости.</p>
+                <p style="margin-top:0.8rem;">🍃 Сегодня мы можем наслаждаться этими аутентичными вкусами — от Копорья до Алтая, от липовых садов до рябиновых рощ.</p>
+            </div>
+        </div>
+        <footer>🌿 Мои фавориты — русские чаи с историей. Заваривайте с душой, храните традиции.</footer>
+    </div>
+
+    <!-- БОКОВАЯ ПАНЕЛЬ -->
+    <div class="sidebar">
+        <h3>📜 Интересные факты</h3>
+        <ul class="fact-list">
+            <li>🍃 Копорский чай (иван-чай) не содержит кофеина, но даёт энергию за счёт витамина C.</li>
+            <li>🏺 Красный корень (копеечник) растёт только на Алтае и в Сибири, его называют «мужским корнем».</li>
+            <li>🌲 Можжевеловые сборы пили русские путешественники для защиты от цинги.</li>
+            <li>🍎 Липовый чай с яблоком — семейный рецепт с 1999 года, символ домашнего тепла.</li>
+            <li>🍂 Рябиновые гроздья — природный источник витаминов, особенно ценится осенью.</li>
+        </ul>
+        <h3 style="margin-top: 2rem;">🍯 Совет дня</h3>
+        <p style="background:#f0e2d4; padding:0.8rem; border-radius:1rem;">Добавьте в липовый чай с яблоком ложечку липового мёда и палочку корицы — получите идеальный зимний напиток.</p>
+    </div>
+</div>
+
+<script>
+    let notes = JSON.parse(localStorage.getItem('russianTeaNotes')) || [];
+
+    function renderNotes() {
+        const container = document.getElementById('notesList');
+        if (!container) return;
+        const filtered = [...notes].reverse();
+        container.innerHTML = filtered.map(note => `
+            <div class="note-item">
+                <strong>🍃 ${note.tea}</strong> <span style="font-size:0.7rem; color:#ad8a6b;">${new Date(note.date).toLocaleString()}</span>
+                <p style="margin-top:6px;">${note.text.replace(/</g, '&lt;')}</p>
+            </div>
+        `).join('');
+        if(notes.length === 0) container.innerHTML = '<p style="padding:1rem; text-align:center;">Напишите своё впечатление о чае ✍️</p>';
+    }
+
+    document.getElementById('saveNoteBtn')?.addEventListener('click', () => {
+        const teaSelect = document.getElementById('teaSelect');
+        const tea = teaSelect.value;
+        const textarea = document.getElementById('noteText');
+        const text = textarea.value.trim();
+        if(!text) {
+            alert('Поделитесь впечатлением о чае!');
+            return;
+        }
+        notes.push({
+            tea: tea,
+            text: text,
+            date: new Date().toISOString()
+        });
+        localStorage.setItem('russianTeaNotes', JSON.stringify(notes));
+        textarea.value = '';
+        renderNotes();
+    });
+
+    renderNotes();
+</script>
+</body>
+</html>
